@@ -16,9 +16,7 @@ public class FileService {
     FileManager fileManager;
 
 
-    public void setNameFile(String name){
-        fileManager.setName(name);
-    }
+
     public String getNameFile(){
        return fileManager.getName();
     }
@@ -27,22 +25,22 @@ public class FileService {
     }
 
 
-    public void createFile() throws IOException {
+    public void createFile(String name, String body) throws IOException {
 
-        fileManager.createFile();
+        fileManager.createFile(name,body);
 
     }
     public String[] getList() throws IOException {
         return fileManager.getList();
     }
-    public String updateFile(String text) throws FileNotFoundException {
-        return fileManager.updateFile(text);
+    public String updateFile(String name,String text) throws FileNotFoundException {
+        return fileManager.updateFile(name,text);
 
     }
-    public void showFile() throws IOException {
-         fileManager.showFile();
+    public String showFile(String name) throws IOException {
+         return fileManager.showFile(name);
     }
-    public void deleteFile() throws FileNotFoundException {
-        fileManager.deleteFile();
+    public void deleteFile(String name) throws FileNotFoundException {
+        fileManager.deleteFile(name);
     }
 }

@@ -10,7 +10,7 @@ import java.io.*;
 @Component
 public class FileManager {
     private static final Logger logger = LoggerFactory.getLogger(FileManager.class);
-    private String pathname="F://Test";
+    private String pathname="/home/denis/Рабочий стол/1";
     private String name;
     private String textfile;
 
@@ -46,16 +46,24 @@ public class FileManager {
         this.name = name;
     }
 
-    public void createFile() throws IOException {
-        File file = new File(pathname,name);
-        logger.debug(pathname+"/"+name);
+    public void createFile(String name, String body) throws IOException {
+        File file = new File(pathname, name);
+        logger.debug(pathname+"/"+ name);
+        try{
         if(!file.exists()) {
             file.createNewFile();
-            logger.info("create file "+name);
-            return;
         }
-        throw new IOException();
-
+            PrintWriter writer=new PrintWriter(file.getAbsoluteFile());
+            try {
+                writer.print(body);
+            } finally {
+                writer.close();
+            }
+            logger.info("create file "+ name);
+            return;
+        }catch (IOException e) {
+            throw new IOException();
+        }
     }
 
     public String[] getList() throws IOException {
@@ -69,26 +77,33 @@ public class FileManager {
         }throw new IOException();
     }
 
-    public String updateFile(String text) throws FileNotFoundException {
+    public String updateFile(String name,String text) throws FileNotFoundException {
         File file = new File(pathname,name);
         logger.debug("Local: "+pathname);
         logger.debug("name file: "+name);
 
         logger.trace(text);   // не уверен, если много текста - не повиснет ли
-        if(file.exists()){
-            PrintWriter writer=new PrintWriter(file.getAbsoluteFile());
-           try {
+        if (file.exists()) {
+
+            PrintWriter writer = new PrintWriter(file.getAbsoluteFile());
+
+            try {
+
                writer.print(text);
-           } finally {
+            } finally {
+
                writer.close();
                logger.info("update file: "+name);
-           }    return "file update";
+            }
+
+            return "file update";
+
         } throw new FileNotFoundException();
     }
 
-    public void showFile() throws IOException {
+    public String showFile(String name) throws IOException {
         File file =new File(pathname,name);
-        logger.debug("show file: "+ pathname+"/"+name);
+        logger.debug("show file: " + pathname + "/" +name);
         StringBuilder sb =new StringBuilder();
         if(file.exists()){
             try{
@@ -110,14 +125,14 @@ public class FileManager {
             setTextfile(sb.toString());
             logger.trace("show text "+sb.toString());
             logger.info("show file: "+name);
-            return;
+            return sb.toString();
         }  throw new FileNotFoundException();
 
     }
 
-    public void deleteFile() throws FileNotFoundException {
-        File file = new File(pathname,name);
-        logger.debug("delete file "+pathname+"/"+name);
+    public void deleteFile(String name) throws FileNotFoundException {
+        File file = new File(pathname, name);
+        logger.debug("delete file "+pathname+"/"+ name);
         if (!file.exists()){
             throw new FileNotFoundException();
 
