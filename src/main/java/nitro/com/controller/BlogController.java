@@ -1,37 +1,18 @@
 package nitro.com.controller;
 
-import nitro.com.service.URL;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-@RestController
-@RequestMapping(value = "/")
+@Controller
 public class BlogController {
 
-    @Autowired
-    private URL url;
 
-
-    String name = "denis";
-
-    @RequestMapping(method = RequestMethod.GET, value = "/blog")
-    public ModelAndView getBlog(ModelAndView model) {
-        model.addObject("blogTitle", "Freemarker Template Demo using Spring");
-        model.addObject("message", "Getting started with Freemarker.<br/>Find a Freemarker template demo using Spring.");
-        model.addObject("references", url.getUrlList());
-        model.setViewName("blog-template");
-        return model;
-    }
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView home( ModelAndView model) {
-        model.addObject("name", name);
-        return model;
-
+    @RequestMapping("/{name}")
+    public String home(@PathVariable  String name  , Model model){
+        model.addAttribute("name", name);
+        return "home";
 
     }
-
 }
-
